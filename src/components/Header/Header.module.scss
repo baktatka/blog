@@ -1,0 +1,90 @@
+@import "../style.scss";
+
+.header {
+  box-sizing: border-box;
+  padding: 6px 22px;
+  align-items: center;
+  background-color: white;
+  height: 80px;
+  display: flex;
+  margin-bottom: 26px;
+  div {
+    p {
+      margin-top: 14px;
+    }
+  }
+
+  .logo {
+    @include text-decoration(18px, $heading-color, 28px);
+    margin-right: auto;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  .signIn {
+    @include text-decoration(18px, $heading-color, 28px);
+    width: 84px;
+    margin-right: 19px;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  .avatar {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+  }
+  .borderSign {
+    box-sizing: border-box;
+    width: 109px;
+    height: 51px;
+    border: 1px solid $success-color;
+    border-radius: 5px;
+    text-align: center;
+    padding-top: 9px;
+    .signUp {
+      @include text-decoration(18px, $success-color, 28px);
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  .createArticle {
+    box-sizing: border-box;
+    border: 1px solid $success-color;
+    border-radius: 5px;
+    padding: 6px 10px;
+    margin-right: 20px;
+    .link {
+      @include text-decoration(14px, $success-color, 22px);
+      color: $success-color;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  .profile {
+    display: flex;
+    align-items: center;
+
+    p {
+      @include text-decoration(18px, $heading-color, 28px);
+      margin-right: 13px;
+    }
+  }
+
+  .logOut {
+    margin-left: 27px;
+    box-sizing: border-box;
+    border: 1px solid $text-color;
+    border-radius: 5px;
+    background-color: white;
+    @include text-decoration(18px, $text-color, 28px);
+    padding: 6px 18px;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

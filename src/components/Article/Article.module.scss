@@ -1,0 +1,74 @@
+@import "../style.scss";
+
+.background {
+  @include box(941px, 140px, 15px);
+  margin-bottom: 26px;
+
+  .header {
+    box-sizing: border-box;
+    display: flex;
+
+    .info {
+      margin-right: auto;
+      margin-bottom: 4px;
+      .titles {
+        @include text-decoration(20px, $info-color, 28px);
+        display: inline-block;
+        margin-right: 13px;
+        margin-bottom: 4px;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+      .tags {
+        box-sizing: border-box;
+        @include text-decoration(12px, $text-color-secondary, 15px);
+        border: 1px solid $text-color-secondary;
+        border-radius: 2px;
+        display: inline-block;
+        padding: 2px;
+        margin-right: 8px;
+      }
+    }
+
+    .person {
+      width: 300px;
+      .names {
+        @include text-decoration(18px, $heading-color, 28px);
+        text-align: end;
+        display: block;
+      }
+      .data {
+        @include text-decoration(12px, $text-color-secondary, 22px);
+        text-align: end;
+        display: block;
+      }
+      .avatar {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        float: right;
+        margin-left: 14px;
+      }
+    }
+  }
+
+  .text {
+    @include text-decoration(12px, $heading-color, 22px);
+    color: $heading-color;
+
+    span {
+      cursor: pointer;
+      margin-right: 4px;
+    }
+  }
+
+  .textLog {
+    @include text-decoration(12px, $text-color, 22px);
+  }
+
+  p {
+    margin: 0;
+    display: inline;
+  }
+}

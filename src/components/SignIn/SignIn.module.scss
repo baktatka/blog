@@ -1,0 +1,13 @@
+@import "../style.scss";
+
+.background {
+  @include box(384px, 374px, 36px);
+  display: flex;
+  flex-direction: column;
+  margin-top: 59px;
+  a {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

@@ -1,0 +1,8 @@
+@import "../style.scss";
+
+.background {
+  @include box(384px, 498px, 36px);
+  display: flex;
+  flex-direction: column;
+  margin-top: 59px;
+}
