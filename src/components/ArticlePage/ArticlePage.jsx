@@ -13,7 +13,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import titleFormat from "../../helper";
 import useAuth from "../../hooks/use-auth";
 import style from "./ArticlePage.module.scss";
-import { fetchArticleSlug } from "../../store/articleSlice";
+import { setArticlePage, setLoading } from "../../store/articleSlice";
 
 const {
   background,
@@ -38,6 +38,7 @@ const {
 
 function ArticlePage() {
   const article = useSelector((state) => state.articles.articlePage);
+
   const loading = useSelector((state) => state.articles.loading);
   const currentUser = useSelector((state) => state.user.username);
   const token = useSelector((state) => state.user.token);
@@ -46,6 +47,20 @@ function ArticlePage() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const { isAuth } = useAuth();
+
+  useEffect(() => {
+    dispatch(setLoading());
+    async function fetchData() {
+      return axios
+        .get(`https://blog.kata.academy/api/articles/${slug}`, {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        })
+        .then((res) => dispatch(setArticlePage(res.data.article)));
+    }
+    fetchData();
+  }, [slug, dispatch, token]);
 
   const {
     author,
@@ -63,10 +78,9 @@ function ArticlePage() {
   const [count, setCount] = useState(favoritesCount);
 
   useEffect(() => {
-    dispatch(fetchArticleSlug(slug, token));
     setLiked(favorited);
     setCount(favoritesCount);
-  }, [dispatch, slug, token, favorited, favoritesCount]);
+  }, [favorited, favoritesCount]);
 
   async function deleteArticle() {
     axios.delete(`https://blog.kata.academy/api/articles/${slug}`, {

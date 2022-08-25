@@ -14,9 +14,9 @@ function SignIn() {
 
   const {
     register,
-    formState: { errors, isValid },
+    formState: { errors },
     handleSubmit,
-  } = useForm({ mode: "onBlur" });
+  } = useForm();
 
   async function loginUser(email, password) {
     axios
@@ -26,7 +26,9 @@ function SignIn() {
           password: password,
         },
       })
-      .then((response) => dispatch(setUser(response.data.user)));
+      .then((response) => {
+        dispatch(setUser(response.data.user));
+      });
   }
 
   const onSubmit = (data) => {
@@ -43,7 +45,7 @@ function SignIn() {
           Email address
           <input
             className={errors?.email && inputErr}
-            type="email"
+            type="text"
             placeholder="Email address"
             {...register("email", {
               required: "The field must be filled in",
@@ -71,12 +73,7 @@ function SignIn() {
         <div className={errorMessage}>
           {errors?.password && <p>{errors.password.message}</p>}
         </div>
-        <input
-          type="submit"
-          value="Login"
-          className={button}
-          disabled={!isValid}
-        />
+        <input type="submit" value="Login" className={button} />
         <p>
           Don’t have an account? <Link to="/sign-up">Sign Up.</Link>
         </p>

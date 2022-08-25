@@ -17,29 +17,23 @@ export const fetchArticles = createAsyncThunk(
   }
 );
 
-export const fetchArticleSlug = createAsyncThunk(
-  "articles/fetchArticlesSlug",
-  async function articlesSlug(slug, token) {
-    const log = token.getState().user.token;
-    return axios
-      .get(`https://blog.kata.academy/api/articles/${slug}`, {
-        headers: {
-          Authorization: `Token ${log}`,
-        },
-      })
-      .then((res) => res.data.article);
-  }
-);
-
 const articleSlice = createSlice({
   name: "articles",
   initialState: {
     articles: [],
     articlesCount: 0,
-    articlePage: null,
+    articlePage: {},
     loading: true,
   },
-  reducers: {},
+  reducers: {
+    setArticlePage(state, action) {
+      state.articlePage = action.payload;
+      state.loading = false;
+    },
+    setLoading(state) {
+      state.loading = true;
+    },
+  },
   extraReducers: {
     [fetchArticles.pending]: (state) => {
       state.loading = true;
@@ -49,14 +43,9 @@ const articleSlice = createSlice({
       state.articlesCount = action.payload.articlesCount;
       state.loading = false;
     },
-    [fetchArticleSlug.pending]: (state) => {
-      state.loading = true;
-    },
-    [fetchArticleSlug.fulfilled]: (state, action) => {
-      state.articlePage = action.payload;
-      state.loading = false;
-    },
   },
 });
+
+export const { setArticlePage, setLoading } = articleSlice.actions;
 
 export default articleSlice.reducer;

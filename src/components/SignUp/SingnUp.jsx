@@ -17,10 +17,10 @@ function SignUp() {
 
   const {
     register,
-    formState: { errors, isValid },
+    formState: { errors },
     handleSubmit,
     watch,
-  } = useForm({ mode: "onBlur" });
+  } = useForm();
 
   async function registUser(username, email, password) {
     axios
@@ -68,7 +68,7 @@ function SignUp() {
         <label>
           Email address
           <input
-            type="email"
+            type="text"
             placeholder="Email address"
             {...register("email", {
               required: "The field must be filled in",
@@ -116,7 +116,7 @@ function SignUp() {
                 if (watch("password") !== val) {
                   return "Your passwords do no match";
                 }
-                return val;
+                return null;
               },
               message: "Passwords must match",
             })}
@@ -141,12 +141,7 @@ function SignUp() {
         <div className={errorMessage}>
           {errors?.agree && <p className={checkErr}>{errors.agree.message}</p>}
         </div>
-        <input
-          type="submit"
-          value="Create"
-          className={button}
-          disabled={!isValid}
-        />
+        <input type="submit" value="Create" className={button} />
         <p>
           Already have an account? <Link to="/sign-in">Sign In.</Link>
         </p>

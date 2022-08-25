@@ -7,13 +7,14 @@ const userSlice = createSlice({
     email: null,
     password: null,
     token: null,
-    image: "https://static.productionready.io/images/smiley-cyrus.jpg",
+    image: null,
   },
   reducers: {
     setUser(state, action) {
       state.username = action.payload.username;
       state.email = action.payload.email;
       state.token = action.payload.token;
+      state.image = "https://static.productionready.io/images/smiley-cyrus.jpg";
       if (action.payload.image) {
         state.image = action.payload.image;
       }

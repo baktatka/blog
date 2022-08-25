@@ -18,9 +18,9 @@ function Form({ titleInfo, onSubmit, other = {} }) {
 
   const {
     register,
-    formState: { errors, isValid },
+    formState: { errors },
     handleSubmit,
-  } = useForm({ mode: "onBlur" });
+  } = useForm();
 
   const [tagsList, setTagsList] = useState(tagList || [""]);
 
@@ -121,12 +121,7 @@ function Form({ titleInfo, onSubmit, other = {} }) {
             );
           })}
         </label>
-        <input
-          className={button}
-          type="submit"
-          value="Send"
-          disabled={!isValid}
-        />
+        <input className={button} type="submit" value="Send" />
       </form>
     </div>
   );
