@@ -17,23 +17,31 @@ export const fetchArticles = createAsyncThunk(
   }
 );
 
+export const fetchArticlesPage = createAsyncThunk(
+  "articles/fetchArticlesPage",
+  async function fetchData(slug, token) {
+    const log = token.getState().user.token;
+    return axios
+      .get(`https://blog.kata.academy/api/articles/${slug}`, {
+        headers: {
+          Authorization: `Token ${log}`,
+        },
+      })
+      .then((res) => res.data.article);
+  }
+);
+
 const articleSlice = createSlice({
   name: "articles",
   initialState: {
     articles: [],
     articlesCount: 0,
-    articlePage: {},
+    articlePage: null,
     loading: true,
+    favorited: false,
+    favoritesCount: 0,
   },
-  reducers: {
-    setArticlePage(state, action) {
-      state.articlePage = action.payload;
-      state.loading = false;
-    },
-    setLoading(state) {
-      state.loading = true;
-    },
-  },
+  reducers: {},
   extraReducers: {
     [fetchArticles.pending]: (state) => {
       state.loading = true;
@@ -43,9 +51,16 @@ const articleSlice = createSlice({
       state.articlesCount = action.payload.articlesCount;
       state.loading = false;
     },
+    [fetchArticlesPage.pending]: (state) => {
+      state.loading = true;
+    },
+    [fetchArticlesPage.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.articlePage = action.payload;
+      state.favorited = action.payload.favorited;
+      state.favoritesCount = action.payload.favoritesCount;
+    },
   },
 });
-
-export const { setArticlePage, setLoading } = articleSlice.actions;
 
 export default articleSlice.reducer;

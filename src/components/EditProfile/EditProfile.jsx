@@ -12,9 +12,9 @@ const { background, button, errorMessage } = style;
 function EditProfile() {
   const {
     register,
-    formState: { errors, isValid },
+    formState: { errors },
     handleSubmit,
-  } = useForm({ mode: "onBlur" });
+  } = useForm();
 
   const token = useSelector((state) => state.user.token);
 
@@ -130,12 +130,7 @@ function EditProfile() {
         <div className={errorMessage}>
           {errors?.image && <p>{errors.image.message}</p>}
         </div>
-        <input
-          type="submit"
-          value="Save"
-          className={button}
-          disabled={!isValid}
-        />
+        <input type="submit" value="Save" className={button} />
       </form>
     </div>
   );

@@ -13,7 +13,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import titleFormat from "../../helper";
 import useAuth from "../../hooks/use-auth";
 import style from "./ArticlePage.module.scss";
-import { setArticlePage, setLoading } from "../../store/articleSlice";
+import { fetchArticlesPage } from "../../store/articleSlice";
 
 const {
   background,
@@ -38,49 +38,31 @@ const {
 
 function ArticlePage() {
   const article = useSelector((state) => state.articles.articlePage);
-
-  const loading = useSelector((state) => state.articles.loading);
-  const currentUser = useSelector((state) => state.user.username);
   const token = useSelector((state) => state.user.token);
 
   const dispatch = useDispatch();
   const { slug } = useParams();
+
+  const loading = useSelector((state) => state.articles.loading);
+  const currentUser = useSelector((state) => state.user.username);
   const navigate = useNavigate();
   const { isAuth } = useAuth();
-
-  useEffect(() => {
-    dispatch(setLoading());
-    async function fetchData() {
-      return axios
-        .get(`https://blog.kata.academy/api/articles/${slug}`, {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        })
-        .then((res) => dispatch(setArticlePage(res.data.article)));
-    }
-    fetchData();
-  }, [slug, dispatch, token]);
-
-  const {
-    author,
-    createdAt,
-    description,
-    tagList,
-    title,
-    body,
-    favorited,
-    favoritesCount,
-  } = article;
-
   const [visible, setVisible] = useState(false);
-  const [liked, setLiked] = useState(favorited);
-  const [count, setCount] = useState(favoritesCount);
+  const [liked, setLiked] = useState(false);
+  const [count, setCount] = useState(0);
+  const { favorited, favoritesCount } = useSelector((state) => state.articles);
 
   useEffect(() => {
+    dispatch(fetchArticlesPage(slug, token));
     setLiked(favorited);
     setCount(favoritesCount);
-  }, [favorited, favoritesCount]);
+  }, [slug, dispatch, token, favorited, favoritesCount]);
+
+  if (article === null) return "";
+
+  const { author, createdAt, description, tagList, title, body } = article;
+
+  const { username, image } = author;
 
   async function deleteArticle() {
     axios.delete(`https://blog.kata.academy/api/articles/${slug}`, {
@@ -89,9 +71,6 @@ function ArticlePage() {
       },
     });
   }
-
-  const { username, image } = author;
-
   const hide = () => {
     setVisible(false);
   };
