@@ -20,6 +20,7 @@ function SignUp() {
     formState: { errors },
     handleSubmit,
     watch,
+    setError,
   } = useForm();
 
   async function registUser(username, email, password) {
@@ -31,13 +32,25 @@ function SignUp() {
           password: password,
         },
       })
-      .then((response) => dispatch(setUser(response.data.user)));
+      .then((response) => {
+        dispatch(setUser(response.data.user));
+        navigate("/");
+      })
+      .catch(() => {
+        setError("email", {
+          type: "server",
+          message: "Email is already taken",
+        });
+        setError("username", {
+          type: "server",
+          message: "Username is already taken",
+        });
+      });
   }
 
   const onSubmit = (data) => {
     const { username, email, password } = data;
     registUser(username, email, password);
-    navigate("/");
   };
 
   return (

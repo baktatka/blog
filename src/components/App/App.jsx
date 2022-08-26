@@ -11,6 +11,9 @@ import EditProfile from "../EditProfile/EditProfile";
 import CreateArticle from "../CreateArticle";
 import EditArticle from "../EditArticle/EditArticle";
 
+import RequirePost from "../../hoc/RequirePost";
+import RequireAuth from "../../hoc/RequireAuth";
+
 const { body } = style;
 
 function App() {
@@ -24,8 +27,22 @@ function App() {
           <Route path="sign-in" element={<SignIn />} />
           <Route path="sign-up" element={<SignUp />} />
           <Route path="profile" element={<EditProfile />} />
-          <Route path="new-article" element={<CreateArticle />} />
-          <Route path="articles/:slug/edit" element={<EditArticle />} />
+          <Route
+            path="new-article"
+            element={
+              <RequireAuth>
+                <CreateArticle />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="articles/:slug/edit"
+            element={
+              <RequirePost>
+                <EditArticle />
+              </RequirePost>
+            }
+          />
         </Route>
       </Routes>
     </div>

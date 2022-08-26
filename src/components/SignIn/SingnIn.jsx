@@ -16,6 +16,7 @@ function SignIn() {
     register,
     formState: { errors },
     handleSubmit,
+    setError,
   } = useForm();
 
   async function loginUser(email, password) {
@@ -28,13 +29,23 @@ function SignIn() {
       })
       .then((response) => {
         dispatch(setUser(response.data.user));
+        navigate("/");
+      })
+      .catch(() => {
+        setError("email", {
+          type: "server",
+          message: "Invalid email",
+        });
+        setError("password", {
+          type: "server",
+          message: "Invalid password",
+        });
       });
   }
 
   const onSubmit = (data) => {
     const { email, password } = data;
     loginUser(email, password);
-    navigate("/articles");
   };
 
   return (

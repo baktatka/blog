@@ -1,19 +1,24 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import style from "./Form.module.scss";
 
-function Form({ titleInfo, onSubmit, other = {} }) {
+function Form({ titleInfo, articleFunction, other = {} }) {
   const { title, description, body, tagList } = other;
+  const [tagsList, setTagsList] = useState(tagList || [""]);
+  const token = useSelector((state) => state.user.token);
+  const navigate = useNavigate();
 
   const {
     background,
     button,
+    errorMessage,
+    inputErr,
     tagStyle,
     tagLabel,
     deleteBut,
     add,
-    errorMessage,
-    inputErr,
   } = style;
 
   const {
@@ -22,20 +27,28 @@ function Form({ titleInfo, onSubmit, other = {} }) {
     handleSubmit,
   } = useForm();
 
-  const [tagsList, setTagsList] = useState(tagList || [""]);
-
-  const addTag = (e) => {
-    e.preventDefault();
+  const addTag = () => {
     setTagsList((tags) => {
       return ["", ...tags];
     });
   };
 
-  const deleteTag = (e, index) => {
-    e.preventDefault();
+  const deleteTag = (index) => {
     const list = [...tagsList];
     list.splice(index, 1);
     setTagsList(list);
+  };
+
+  const changeValue = (e, index) => {
+    const list = [...tagsList];
+    list[index] = e.target.value;
+    setTagsList(list);
+  };
+
+  const onSubmit = (data) => {
+    const { title, description, body } = data;
+    articleFunction(title, description, body, tagsList, token);
+    navigate("/");
   };
 
   return (
@@ -91,19 +104,19 @@ function Form({ titleInfo, onSubmit, other = {} }) {
           Tags
           {tagsList.map((tag, i) => {
             return (
-              <div className={tagLabel} key={tag}>
+              <div className={tagLabel} key={`tag${i + 1}`}>
                 <input
                   className={tagStyle}
                   type="text"
                   placeholder="Tag"
-                  {...register(`tag${i}`)}
-                  defaultValue={tag}
+                  onChange={(e) => changeValue(e, i)}
+                  value={tag}
                 />
                 {tagsList.length !== 1 && (
                   <button
                     type="button"
                     className={deleteBut}
-                    onClick={(e) => deleteTag(e, i)}
+                    onClick={() => deleteTag(i)}
                   >
                     Delete
                   </button>
@@ -112,7 +125,7 @@ function Form({ titleInfo, onSubmit, other = {} }) {
                   <button
                     type="button"
                     className={add}
-                    onClick={(e) => addTag(e)}
+                    onClick={() => addTag()}
                   >
                     Add Tag
                   </button>

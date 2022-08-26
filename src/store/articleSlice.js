@@ -40,8 +40,19 @@ const articleSlice = createSlice({
     loading: true,
     favorited: false,
     favoritesCount: 0,
+    tagsList: [""],
   },
-  reducers: {},
+  reducers: {
+    addTag(state) {
+      state.tagsList.push("");
+    },
+    deleteTag(state, action) {
+      state.tagsList.splice(action.payload, 1);
+    },
+    changeValue(state, action) {
+      state.tagsList[action.payload.index] = action.payload.event;
+    },
+  },
   extraReducers: {
     [fetchArticles.pending]: (state) => {
       state.loading = true;
@@ -62,5 +73,5 @@ const articleSlice = createSlice({
     },
   },
 });
-
+export const { addTag, deleteTag, changeValue } = articleSlice.actions;
 export default articleSlice.reducer;

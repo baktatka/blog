@@ -3,7 +3,6 @@
 .background {
   @include box(941px, 140px, 15px);
   margin-bottom: 26px;
-
   .header {
     box-sizing: border-box;
     display: flex;
@@ -13,7 +12,7 @@
       margin-bottom: 4px;
       .titles {
         @include text-decoration(20px, $info-color, 28px);
-        display: inline-block;
+        display: inline;
         margin-right: 13px;
         margin-bottom: 4px;
         &:hover {

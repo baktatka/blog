@@ -1,24 +1,11 @@
 import axios from "axios";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import React, { useEffect } from "react";
-import useAuth from "../../hooks/use-auth";
+
+import React from "react";
 
 import Form from "../Form";
 
 function CreateArticle() {
-  const { isAuth } = useAuth();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!isAuth) {
-      navigate("/sign-in");
-    }
-  });
-
-  const token = useSelector((state) => state.user.token);
-
-  async function createArticle(title, description, body, tagList, token) {
+  const createArticle = async (title, description, body, tagList, token) => {
     axios.post(
       "https://blog.kata.academy/api/articles",
       {
@@ -35,16 +22,11 @@ function CreateArticle() {
         },
       }
     );
-  }
-
-  const onSubmit = (data) => {
-    const { title, description, body, ...tags } = data;
-    const tagList = Object.values(tags);
-    createArticle(title, description, body, tagList, token);
-    navigate("/");
   };
 
-  return <Form titleInfo="Create new article" onSubmit={onSubmit} />;
+  return (
+    <Form titleInfo="Create new article" articleFunction={createArticle} />
+  );
 }
 
 export default CreateArticle;

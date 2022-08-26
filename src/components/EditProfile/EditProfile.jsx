@@ -16,7 +16,9 @@ function EditProfile() {
     handleSubmit,
   } = useForm();
 
-  const token = useSelector((state) => state.user.token);
+  const { username, email, password, token, image } = useSelector(
+    (state) => state.user
+  );
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -58,6 +60,7 @@ function EditProfile() {
           <input
             type="text"
             placeholder="Username"
+            defaultValue={username}
             {...register("username", {
               required: "The field must be filled in",
               minLength: {
@@ -79,6 +82,7 @@ function EditProfile() {
           <input
             type="email"
             placeholder="Email address"
+            defaultValue={email}
             {...register("email", {
               required: "The field must be filled in",
               pattern: {
@@ -96,6 +100,7 @@ function EditProfile() {
           <input
             type="password"
             placeholder="New password"
+            defaultValue={password}
             {...register("password", {
               required: "The field must be filled in",
               minLength: {
@@ -117,6 +122,7 @@ function EditProfile() {
           <input
             type="text"
             placeholder="Avatar image (url)"
+            defaultValue={image}
             {...register("image", {
               required: "The field must be filled in",
               pattern: {

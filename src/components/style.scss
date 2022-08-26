@@ -18,7 +18,8 @@ $higlight-color: #f5222d;
 
 @mixin box($width, $height, $padding) {
   box-sizing: border-box;
-  width: $width;
+  width: 100%;
+  max-width: $width;
   min-height: $height;
   margin-right: auto;
   margin-left: auto;

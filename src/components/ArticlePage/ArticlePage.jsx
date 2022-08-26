@@ -155,11 +155,14 @@ function ArticlePage() {
               <div>
                 {tagList !== null &&
                   tagList
-                    .map((tag) => (
-                      <div className={tags} key={tag}>
-                        {titleFormat(tag, 30)}
-                      </div>
-                    ))
+                    .map((tag) => {
+                      if (!tag) return null;
+                      return (
+                        <div className={tags} key={tag}>
+                          {titleFormat(tag, 30)}
+                        </div>
+                      );
+                    })
                     .slice(0, 10)}
               </div>
               <article className={text}>

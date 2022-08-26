@@ -1,17 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import Form from "../Form";
 
 function EditArticle() {
-  const token = useSelector((state) => state.user.token);
   const { slug, ...other } = useSelector((state) => state.articles.articlePage);
 
-  const navigate = useNavigate();
-
-  async function editArticle(title, description, body, tagList, token) {
+  const editArticle = async (title, description, body, tagList, token) => {
     axios.put(
       `https://blog.kata.academy/api/articles/${slug}`,
       {
@@ -28,16 +24,15 @@ function EditArticle() {
         },
       }
     );
-  }
-
-  const onSubmit = (data) => {
-    const { title, description, body, ...tags } = data;
-    const tagList = Object.values(tags);
-    editArticle(title, description, body, tagList, token);
-    navigate("/");
   };
 
-  return <Form titleInfo="Edit article" onSubmit={onSubmit} other={other} />;
+  return (
+    <Form
+      titleInfo="Edit article"
+      articleFunction={editArticle}
+      other={other}
+    />
+  );
 }
 
 export default EditArticle;
